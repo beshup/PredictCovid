@@ -24,27 +24,11 @@ app.use('/test', express.static('client/test'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.post('/storePastCovidTweets', function(req, res){
+app.post('/findSentimentInLocation', function(req, res){
 
     // run python script and then get the results back
     // with the results, post in a database, and then in client side code, make following request showing results of database
-
-
-    var arr = 
-    [ 
-        {content: "tweet text 1", sentiment: 7, createdAt: new Date()}, 
-        {content: "tweet text 2", sentiment: 9, createdAt: new Date()},
-        {content: "tweet text 3", sentiment: 3, createdAt: new Date()},
-        {content: "tweet text 4", sentiment: 2, createdAt: new Date()},
-        {content: "tweet text 5", sentiment: 18, createdAt: new Date()},
-        {content: "tweet text 6", sentiment: 11, createdAt: new Date()}
-    ];
-
-    PastCovidTweet.insertMany(arr, (error, docs) => {
-        if(error){
-            console.log("Couldn't post past covid tweets to db");
-        }
-    });
+    console.log(req.body);
 
     res.send("Worked");
     
