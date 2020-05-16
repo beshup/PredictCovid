@@ -1,0 +1,42 @@
+* {
+    margin:0;
+    padding: 0;
+}
+
+body {
+    margin:0;
+    font-family:Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size:17px;
+    color:black;
+    line-height: 1.6;
+}
+
+#showcase {
+/*    background-image: url("https://maxcdn.icons8.com/app/uploads/2018/08/how-to-create-gradient-article.jpg"); */
+    background-size:cover;
+    background-position:center;
+    height: 100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+}
+
+#showcase h1{
+    font-size: 50px;
+}
+
+#showcase p{
+    font-size:20px;
+}
+
+#showcase .button{
+    font-size:18px;
+    text-decoration:none;
+    color:black;
+    border:black 1px solid;
+    padding:10px 20px;
+    border-radius:10px;
+    margin-top:10px;
+    align-items: baseline;
+}
