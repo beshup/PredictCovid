@@ -9,10 +9,22 @@
 <link href="https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.css" rel="stylesheet" />
 <style>
 	body { margin: 0; padding: 0; }
-	#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+	#map-container {
+		position: relative;
+		width: 100%;
+		height: 500px;
+		border-radius: 10px;
+		overflow: hidden;
+	}
+
+	#map {
+		position: relative;
+		height: inherit;
+		width: inherit;
+	}
 </style>
 </head>
-<body>
+<body class="bg-light">
 <style>
 	#menu {
 		position: absolute;
@@ -29,24 +41,38 @@
 />
 <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
-<div id="map"></div>
-<div id="menu">
-	<input
-		id="streets-v11"
-		type="radio"
-		name="rtoggle"
-		value="streets"
-		checked="checked"
-	/>
-	<label for="streets">streets</label>
-	<input id="light-v10" type="radio" name="rtoggle" value="light" />
-	<label for="light">light</label>
-	<input id="dark-v10" type="radio" name="rtoggle" value="dark" />
-	<label for="dark">dark</label>
-	<input id="outdoors-v11" type="radio" name="rtoggle" value="outdoors" />
-	<label for="outdoors">outdoors</label>
-	<input id="satellite-v9" type="radio" name="rtoggle" value="satellite" />
-	<label for="satellite">satellite</label>
+
+<div class="container mt-5 mb-5">
+	<div class="card shadow-lg" style="border-radius: 17px;">
+		<div class="card-header text-center">
+			<span class ="mb-4 mt-4" style="font-weight: bold; font-size: 30px;">Covid-19 Sentiment</span> 
+		</div>
+		<div class="card-body">
+			<div class="d-flex justify-content-center ">
+				<div id="map-container">
+					<div id="map"></div>
+				</div>
+			</div>
+			<div id="menu" style="position: relative;">
+				<input
+					id="streets-v11"
+					type="radio"
+					name="rtoggle"
+					value="streets"
+					checked="checked"
+				/>
+				<label for="streets">streets</label>
+				<input id="light-v10" type="radio" name="rtoggle" value="light" />
+				<label for="light">light</label>
+				<input id="dark-v10" type="radio" name="rtoggle" value="dark" />
+				<label for="dark">dark</label>
+				<input id="outdoors-v11" type="radio" name="rtoggle" value="outdoors" />
+				<label for="outdoors">outdoors</label>
+				<input id="satellite-v9" type="radio" name="rtoggle" value="satellite" />
+				<label for="satellite">satellite</label>
+			</div>
+		</div>
+	</div>
 </div>
 <script>
 	mapboxgl.accessToken = 'pk.eyJ1IjoiYW53ZXNoaSIsImEiOiJja2E3a2ZmNDcwNHQ2Mnl1bGszYjdlMjJuIn0.Q5bZdtbSOZjC_eGYWHhw-Q';
