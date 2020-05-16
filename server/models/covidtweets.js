@@ -7,4 +7,4 @@ var pastcovidtweetSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model("PastCovidTweet", pastcovidtweetSchema);
+module.exports = mongoose.model("PastCovidTweets", pastcovidtweetSchema);
