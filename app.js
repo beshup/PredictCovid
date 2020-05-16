@@ -1,21 +1,25 @@
- var express = require('express'),
-     app = express(),
-     mongoose = require('mongoose'),
-     PORT = 3000;
-     PastCovidTweet = require('./server/models/covidtweets')
+var express = require('express'),
+    app = express(),
+    mongoose = require('mongoose'),
+    PORT = 3000;
+    PastCovidTweet = require('./server/models/covidtweets'),
+    compression = require('compression'),
+    cors = require('cors');
 
-
+app.use(compression());
+app.use(cors());
 
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
 
-mongoose.connect('mongodb+srv://predictcoviduser:ruhacks@cluster0-ztew1.mongodb.net/test?retryWrites=true&w=majority', () => {
+mongoose.connect('mongodb+srv://predictcoviduser:ruhacks@cluster0-ztew1.mongodb.net/predictcovid?retryWrites=true&w=majority', () => {
     console.log("connected to database on atlas");
 });
 
-app.use('/', express.static('client'));
+app.get('/', express.static('client'));
+app.use('/test', express.static('client/test'));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -36,11 +40,13 @@ app.post('/storePastCovidTweets', function(req, res){
             console.log("Couldn't post past covid tweets to db");
         }
     });
+
+    res.send("Worked");
     
 });
 
 app.post('/newCovidTweets', function(req, res){
-    
+
 });
 
 // Listen on specified port
