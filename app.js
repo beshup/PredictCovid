@@ -49,6 +49,12 @@ app.post('/newCovidTweets', function(req, res){
 
 });
 
+app.post('/getTweetsInArea', function(req, res){
+    var location = JSON.parse(req.body);
+    // run python script and pass in the location and then get the results back
+    // with the results, post in a database, and then in client side code, make following request showing results of database
+});
+
 // Listen on specified port
 app.listen(PORT, function() {
     console.log(`Server running at http://localhost:${PORT}/`);
