@@ -19,7 +19,7 @@ mongoose.connect('mongodb+srv://predictcoviduser:ruhacks@cluster0-ztew1.mongodb.
 });
 
 app.get('/', express.static('client'));
-app.use('/test', express.static('client/test'));
+app.use('/show', express.static('client/leafletMap'));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
