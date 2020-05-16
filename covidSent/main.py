@@ -17,7 +17,7 @@ example = tweepy.Cursor(api.search, q='COVID')
 
 beginningDate = '2020-02-01'
 endDate = '2020-05-15'
-maxTweetsTotal = 30
+maxTweetsTotal = 10
 
 positiveTweets = 0
 negativeTweets = 0
@@ -29,6 +29,8 @@ countAllTweets = 0
 def get_tweets(cityName, leadTerm):
     global countAllTweets
     global neutralTweets
+    global negativeTweets
+    global positiveTweets
     mySearchTerm = leadTerm + " AND " + cityName
     count = 0
     polarityCount = 0
@@ -46,8 +48,17 @@ def get_tweets(cityName, leadTerm):
         print(countAllTweets)
         sent = TextBlob(tweet.text)
         if sent.sentiment.polarity == 0:
+            #neutral tweet
             neutralTweets += 1
+        elif sent.sentiment.polarity > 0:
+            #positive tweet
+            positiveTweets += 1
+            count += 1
+            polarityCount += sent.sentiment.polarity
+            subjectiveCount += sent.sentiment.subjectivity
         else:
+            #negative tweet
+            negativeTweets += 1
             count += 1
             polarityCount += sent.sentiment.polarity
             subjectiveCount += sent.sentiment.subjectivity
@@ -58,7 +69,7 @@ def get_tweets(cityName, leadTerm):
     else:
         averagePolarity = 0
         averageSubjectivity = 0
-    overallSentiment = [averagePolarity, averageSubjectivity, neutralTweets]
+    overallSentiment = [averagePolarity, averageSubjectivity]
     return overallSentiment
 
 
@@ -68,7 +79,7 @@ overallSubjectivity = 0
 overallPolarity = 0
 
 for i in prefix:
-    #replace toronto with city from user searched query
+    #REPLACE "TORONTO" WITH THE STRING FROM THEIR SEARCH
     myList = get_tweets("Toronto", i)
     overallPolarity += myList[0]
     overallSubjectivity += myList[1]
@@ -76,8 +87,11 @@ for i in prefix:
 overallPolarity = overallPolarity / len(prefix)
 overallSubjectivity = overallSubjectivity / len(prefix)
 
-print(overallPolarity)
-print(overallSubjectivity)
+print("Overall positive/negative score with -1 being bad and 1 being good: " + str(overallPolarity))
+print("Overall subjectivity with a score of 1 being highly speculative and 0 factual: " + str(overallSubjectivity))
+print("Num neutral tweets: " + str(neutralTweets))
+print("num positive tweets: " + str(positiveTweets))
+print("num negative tweets: " + str(negativeTweets))
 
 
 #lat = "40.7128"
