@@ -6,11 +6,7 @@
 <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <link href="https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.css" rel="stylesheet" />
-<link
-	rel="stylesheet"
-	href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css"
-	type="text/css"
-/>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css" type="text/css"/>
 <script src="https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.js"></script>
 <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
@@ -37,17 +33,16 @@
 	h1 {text-align: center;
 		margin-top: 40px;
 	}
+	h2{
+		text-align: center;
+		margin-top: 50%;
+	}
 	.btn {
-		background-color: #f4511e;
 		border: none;
 		color: white;
 		padding: 20px 40px;
 		text-align: center;
 		font-size: 16px;
-		margin-bottom: 20px;
-		margin-right: 20px;
-		margin-left: 87%;
-		margin-top: 55%;
 		opacity: 1;
 		transition: 0.3s;
 		position:absolute;
@@ -56,12 +51,55 @@
 
 	.btn:hover {opacity: 0.6}
 	
+	.btndata {
+		background-color: green;
+		margin-bottom: 20px;
+		margin-right: 20px;
+		margin-left: 85%;
+		margin-top: 35%;
+	}
+
+	.btnmap {
+		background-color: #f4511e;
+		margin-bottom: 20px;
+		margin-right: 20px;
+		margin-left: 83%;
+		margin-top: 40%;
+	}
+	#affected {
+		font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+		border-collapse: collapse;
+		width: 60%;
+		margin-left: 20%;
+		text-align: center;
+	}
+
+	#affected td, #affected th {
+		border: 1px solid #ddd;
+		padding: 8px;
+	}
+
+	#affected tr:nth-child(even){background-color: #f2f2f2;}
+
+	#affected tr:hover {background-color: #ddd;}
+
+	#affected th {
+		padding-top: 12px;
+		padding-bottom: 12px;
+		text-align: left;
+		background-color: #4CAF50;
+		color: white;
+		text-align: center;
+		font-size: larger;
+	}
+
 </style>
 </head>
 <body class="bg-light">
 
 <h1><strong>COVID-19 SENTIMENT DATA ANALYSIS</strong></h1>
-<button class="btn" id="submitLocation">Hover Over Me</button>
+<button class="btn btndata" id="data">GET DATA FOR SEARCH</button>
+<button class="btn btnmap" id="newMap">DATA HEATMAP BY PROVINCE</button>
 	<div id="map"></div>
 	<div id="menu" class="bg-light">
 		<input
@@ -113,5 +151,52 @@
 	}
 	
 </script>
+<h2><strong>DATA FOR SEARCHED CITY</strong></h2><br><br>
+<table id="affected">
+	<tr>
+	  <th>Sentiment of tweets</th>
+	  <th>Number</th>
+	</tr>
+	<tr>
+	  <td>Alfreds Futterkiste</td>
+	  <td>Maria Anders</td>
+	</tr>
+	<tr>
+	  <td>Berglunds snabbköp</td>
+	  <td>Christina Berglund</td>
+	</tr>
+	<tr>
+	  <td>Centro comercial Moctezuma</td>
+	  <td>Francisco Chang</td>
+	</tr>
+	<tr>
+	  <td>Ernst Handel</td>
+	  <td>Roland Mendel</td>
+	</tr>
+	<tr>
+	  <td>Island Trading</td>
+	  <td>Helen Bennett</td>
+	</tr>
+	<tr>
+	  <td>Königlich Essen</td>
+	  <td>Philip Cramer</td>
+	</tr>
+	<tr>
+	  <td>Laughing Bacchus Winecellars</td>
+	  <td>Yoshi Tannamuri</td>
+	</tr>
+	<tr>
+	  <td>Magazzini Alimentari Riuniti</td>
+	  <td>Giovanni Rovelli</td>
+	</tr>
+	<tr>
+	  <td>North/South</td>
+	  <td>Simon Crowther</td>
+	</tr>
+	<tr>
+	  <td>Paris spécialités</td>
+	  <td>Marie Bertrand</td>
+	</tr>
+  </table>
 </body>
 </html>
