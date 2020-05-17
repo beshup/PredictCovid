@@ -181,17 +181,20 @@ app.post('/findSentimentInState', function(req, res){
     
 });
 
-app.get('getStateData', function(req, res){
+app.get('/getStateData', function(req, res){
     var arrStates = [];
-    State.find({} , (err, state) => {
-        if(err) //do something...
+    State.find({} , (error, arr) => {
+        if(error){
 
-        state.map(eachState => {
-            var obj = {stateName: eachState.stateName, comparative: eachState.comparative, numGood: eachState.numGood, numBad: eachState.numBad, numNeutral: eachState.numNeutral};
+        } //do something...
+
+        arr.forEach(function(eachState){
+            var obj = {score: eachState.score, stateName: eachState.stateName, comparative: eachState.comparative, numGood: eachState.numGood, numBad: eachState.numBad, numNeutral: eachState.numNeutral};
             arrStates.push(obj);
-        })
+        });
+
+        res.send(JSON.stringify(arrStates));
     });
-    res.send(JSON.stringify(arrStates));
 });
 
 // Listen on specified port

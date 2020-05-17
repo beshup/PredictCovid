@@ -38,18 +38,23 @@
 
 <script type="text/javascript" src="canada-states.js"></script>
 <script>
-	document.getElementById('specialBtn').addEventListener('click', function(){
-		fetch('https://health-api.com/api/v1/covid-19/US/full', {
-			method: 'GET',
-			mode: 'no-cors',
-			headers: {
-				//'Accept': 'application/json'
-				'Content-Type': 'application/json'
+	fetch('/getStateData', {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	}).then(response => response.json())
+	.then(function(data){
+		console.log(data);
+		var stateArr = usd['features'];
+		for(var i=0; i<stateArr.length; i++){
+			var nameOfState = stateArr[i]['properties']['PRENAME'];
+			for(var j=0; j<data.length; j++){
+				if(data[j].stateName == nameOfState){
+					stateArr[i]['properties']['density'] = data[j].score;
+				}
 			}
-		}).then(response => response.json())
-		.then(function(data) {
-			console.log(data);
-		});
+		}
 	});
 </script>
 
