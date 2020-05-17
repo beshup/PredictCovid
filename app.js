@@ -92,8 +92,61 @@ app.post('/findSentimentInLocation', function(req, res){
     
 });
 
-app.post('/newCovidTweets', function(req, res){
+app.post('/findSentimentInState', function(req, res){
 
+    // run python script and then get the results back
+    // with the results, post in a database, and then in client side code, make following request showing results of database
+    var location = req.body.area;
+    
+    var searchterms = location + " AND covid";
+
+    var sum = 0;
+    var comparativeSum = 0;
+    
+    var numPosTweets = 0;
+    var numNegTweets = 0;
+    var numNeutralTweets = 0;
+    
+
+    client.get('search/tweets', {q: searchterms, count: 100}, function(error, tweets, response) {
+        for(var i=0; i<tweets.statuses.length; i++){
+            var score = sentiment.analyze(tweets.statuses[i].text).score;
+            var comparativeScore = sentiment.analyze(tweets.statuses[i].text).comparative;
+            comparativeSum += comparativeScore;
+            sum += score;
+            console.log(score)
+            //console.log(sum)
+            if(score < 0) {
+                numNegTweets++;
+            }
+            else if(score == 0) {
+                numNeutralTweets++;
+            }
+            else {
+                numPosTweets++;
+            }
+            //console.log(sum);
+        }
+        var obj = {score: sum, comparative: comparativeSum, numGood: numPosTweets, numBad: numNegTweets, numNeutral: numNeutralTweets};
+        res.send(JSON.stringify(obj));
+    });
+    
+    /*
+    var cityname = new CityName({
+        city: location,
+        num: 1
+    });
+
+    cityname.save();
+    */
+
+    /*
+    PythonShell.run('covidSent/main.py', function (err) {
+        if (err) throw err;
+        console.log('finished');
+    });
+    */
+    
 });
 
 app.post('/getTweetsInArea', function(req, res){

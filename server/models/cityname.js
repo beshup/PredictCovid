@@ -1,7 +1,11 @@
 var mongoose = require('mongoose');
-var cityNameSchema = new mongoose.Schema({
-    city: String,
-    num: Number
+var stateSchema = new mongoose.Schema({
+    stateName: String,
+    score: Number,
+    comparative: Number,
+    posTweets: Number,
+    negTweets: Number,
+    neutralTweets: Number
 });
 
-module.exports = mongoose.model("city", cityNameSchema);
+module.exports = mongoose.model("state", stateSchema);
