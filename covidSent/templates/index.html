@@ -219,6 +219,8 @@ $(document).ready(function() {
 		.then(function(data){
 			console.log(data);
 			btn.addClass('d-none');
+
+			$('#avgSentiment').text(data.score);
 		});
 	
 
@@ -252,7 +254,7 @@ $(document).ready(function() {
 	</tr>
 	<tr>
 	  <td>Average Sentiment</td>
-	  <td>NEED TO GRAB</td>
+	  <td id="avgSentiment">NEED TO GRAB</td>
 	</tr>
 	<tr>
 	  <td>Subjectivity</td>
