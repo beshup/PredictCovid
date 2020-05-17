@@ -3,9 +3,9 @@ var stateSchema = new mongoose.Schema({
     stateName: String,
     score: Number,
     comparative: Number,
-    posTweets: Number,
-    negTweets: Number,
-    neutralTweets: Number
+    numGood: Number,
+    numBad: Number,
+    numNeutral: Number
 });
 
 module.exports = mongoose.model("state", stateSchema);

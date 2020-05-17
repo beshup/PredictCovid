@@ -2,7 +2,7 @@ var express = require('express'),
     app = express(),
     mongoose = require('mongoose'),
     PORT = 3000;
-    CityName = require('./server/models/cityname'),
+    State = require('./server/models/statename'),
     compression = require('compression'),
     cors = require('cors'),
     {PythonShell} = require('python-shell'),
@@ -127,8 +127,8 @@ app.post('/findSentimentInState', function(req, res){
             }
             //console.log(sum);
         }
-        var obj = {score: sum, comparative: comparativeSum, numGood: numPosTweets, numBad: numNegTweets, numNeutral: numNeutralTweets};
-        res.send(JSON.stringify(obj));
+        var storage = new State({stateName: location, comparative: comparativeSum, numGood: numPosTweets, numBad: numNegTweets, numNeutral: numNeutralTweets});
+        storage.save();
     });
     
     /*
@@ -149,11 +149,17 @@ app.post('/findSentimentInState', function(req, res){
     
 });
 
-app.post('/getTweetsInArea', function(req, res){
-    var city = req.body.area;
-    console.log(city);
-    // pass in city to flask made api in main.py, and then get the results back
+app.get('getStateData', function(req, res){
+    var arrStates = [];
+    State.find({} , (err, state) => {
+        if(err) //do something...
 
+        state.map(eachState => {
+            var obj = {stateName: eachState.stateName, comparative: eachState.comparative, numGood: eachState.numGood, numBad: eachState.numBad, numNeutral: eachState.numNeutral};
+            arrStates.push(obj);
+        })
+    });
+    res.send(JSON.stringify(arrStates));
 });
 
 // Listen on specified port
