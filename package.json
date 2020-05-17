@@ -18,5 +18,8 @@
     "python-shell": "^2.0.0",
     "sentiment": "^5.0.2",
     "twitter": "^1.7.1"
+  },
+  "engines": {
+    "node": "12.14.1"
   }
 }
