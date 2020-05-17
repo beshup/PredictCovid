@@ -4,7 +4,8 @@ var express = require('express'),
     PORT = 3000;
     PastCovidTweet = require('./server/models/covidtweets'),
     compression = require('compression'),
-    cors = require('cors');
+    cors = require('cors'),
+    {PythonShell} = require('python-shell');
 
 app.use(compression());
 app.use(cors());
@@ -28,7 +29,8 @@ app.post('/findSentimentInLocation', function(req, res){
 
     // run python script and then get the results back
     // with the results, post in a database, and then in client side code, make following request showing results of database
-    console.log(req.body);
+    var location = req.body.area;
+
 
     res.send("Worked");
     
@@ -39,7 +41,10 @@ app.post('/newCovidTweets', function(req, res){
 });
 
 app.post('/getTweetsInArea', function(req, res){
-    var location = JSON.parse(req.body);
+    var city = req.body.area;
+    console.log(city);
+    // pass in city to flask made api in main.py, and then get the results back
+
 });
 
 // Listen on specified port

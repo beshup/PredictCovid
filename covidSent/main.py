@@ -131,5 +131,3 @@ print("num negative tweets: " + str(negativeTweets))
 
 #for tweet in tweepy.Cursor(api.search, q='COVID',lang='en').items(5):
 #    print(tweet.text)
-
-

@@ -98,8 +98,13 @@
 <body class="bg-light">
 
 <h1><strong>COVID-19 SENTIMENT DATA ANALYSIS</strong></h1>
+<<<<<<< HEAD
 <button class="btn btndata" id="data">GET DATA FOR SEARCH</button>
 <button href='https://localhost:3000/show' class="btn btnmap" id="newMap">DATA HEATMAP BY PROVINCE</button>
+=======
+<button class="btn btndata d-none" id="submitLocation">GET DATA FOR SEARCH</button>
+<button class="btn btnmap" id="newMap">DATA HEATMAP BY PROVINCE</button>
+>>>>>>> 0c03fb7de95def29939a6a2ebe8e25e3550b0ad0
 	<div id="map"></div>
 	<div id="menu" class="bg-light">
 		<input
@@ -127,6 +132,8 @@
 		style: 'mapbox://styles/mapbox/streets-v11',
 		zoom: 13,
 		center: [-79.4512, 43.6568]
+	}, () => {
+
 	});
 	
 	map.addControl(
@@ -150,6 +157,94 @@
 		inputs[i].onclick = switchLayer;
 	}
 	
+</script>
+
+<script>
+
+$(document).ready(function() {
+	var location,
+		lat,
+		long;
+	var btn = $('#submitLocation');
+
+	$(document).on('keydown', (e) => {
+		if(e.which == 13){
+			location = $('.mapboxgl-ctrl-geocoder--input')[0].value;
+			btn.removeClass('d-none');
+		}
+	});
+
+	btn.on('click', () => {
+
+		const access_token = 'pk.eyJ1Ijoic29tYXBzIiwiYSI6ImNrYTduZ2VrNTA1dDQycGxqbTZuNWtteGIifQ.kJpgxAjDzRivSgfoeZyoOA';
+		//call geocoding api and then reverse geocoding api
+		fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${location}.json?types=poi&access_token=${access_token}`, {
+			method: "GET",
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			}
+		})
+		.then(response => response.json())
+		.then(function(data){
+			long = data.features[0].center[0];
+			lat = data.features[0].center[1];
+
+			 return fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}&key=AIzaSyD9Osnpu8WIOT4TVjZ0G_-ZS9t4qLdPVus`, {
+				method: "GET",
+				mode: 'cors'
+			})
+		})
+		.then(response => response.json())
+		.then(function(data){
+			var arr = data.results[0].address_components;
+			var cityName = null;
+			arr.forEach(elem => {
+				for(var i=0; i<elem.types.length; i++){
+					if(cityName == null){
+						if(elem.types[i] == 'locality'){
+							cityName = elem.long_name;
+						}
+					}
+				}
+			});
+
+			var data = { area: cityName}
+			return fetch('/getTweetsInArea', {
+				method: 'POST',
+				headers: {
+				'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(data)
+			})
+		}).then(function(response){ })
+		.then(function(data){
+
+		});
+	
+
+		/*
+		var bodyData = {area: city};
+
+		fetch('/findSentimentInLocation', {
+			method: "POST",
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(bodyData)
+		}).then(function(response){
+			console.log('success');
+		}).then(function(data){
+
+		}).catch(function(error){
+			console.log(error);
+		});
+		*/
+		
+	});
+});
+
 </script>
 <h2><strong>DATA FOR SEARCHED CITY</strong></h2><br><br>
 <table id="affected">
