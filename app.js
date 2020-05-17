@@ -38,10 +38,12 @@ app.post('/findSentimentInLocation', function(req, res){
 
     cityname.save();
 
+    /*
     PythonShell.run('covidSent/main.py', function (err) {
         if (err) throw err;
         console.log('finished');
     });
+    */
 
 
     res.send("Worked");
