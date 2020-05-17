@@ -6,9 +6,15 @@ from textblob import TextBlob
 
 app = Flask(__name__)
 
-@app.route('/getSentimentOffCityName', methods=["POST"])
+@app.route('/getSentimentOffCity', methods = ['POST'])
 def hello_world():
-    return 'Hello, World!'
+    req = request.get_json()
+    print(req)
+
+if __name__ == '__main__':
+    app.debug = True
+    app.run(host='0.0.0.0', port=5000)
+
 
 consumer_key = '7jAQTZMwnBW7EIaj58wQM4oKF'
 consumer_secret = 'EkS01Y1vPKVTycXxeFj5L701BnIXALviiB7rqRVEUY3M9Z0RVT'
