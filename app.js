@@ -20,7 +20,7 @@ mongoose.connect('mongodb+srv://predictcoviduser:ruhacks@cluster0-ztew1.mongodb.
 });
 
 app.get('/', express.static('client'));
-app.use('/test', express.static('client/test'));
+app.use('/show', express.static('client/leafletMap'));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -42,7 +42,7 @@ app.post('/newCovidTweets', function(req, res){
 
 app.post('/getTweetsInArea', function(req, res){
     var city = req.body.area;
-    
+    console.log(city);
     // pass in city to flask made api in main.py, and then get the results back
 
 });
