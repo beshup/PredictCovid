@@ -32,10 +32,26 @@
 </style>
 </head>
 <body>
+<button id="specialBtn">jcndm</button>
 
 <div id='map'></div>
 
 <script type="text/javascript" src="canada-states.js"></script>
+<script>
+	document.getElementById('specialBtn').addEventListener('click', function(){
+		fetch('https://health-api.com/api/v1/covid-19/US/full', {
+			method: 'GET',
+			mode: 'no-cors',
+			headers: {
+				//'Accept': 'application/json'
+				'Content-Type': 'application/json'
+			}
+		}).then(response => response.json())
+		.then(function(data) {
+			console.log(data);
+		});
+	});
+</script>
 
 
 <script type="text/javascript">
