@@ -64,7 +64,7 @@ app.post('/findSentimentInLocation', function(req, res){
             var comparativeScore = sentiment.analyze(tweets.statuses[i].text).comparative;
             comparativeSum += comparativeScore;
             sum += score;
-            console.log(score)
+           // console.log(score)
             //console.log(sum)
             if(score < 0) {
                 numNegTweets++;
@@ -85,7 +85,7 @@ app.post('/findSentimentInLocation', function(req, res){
             var comparativeScore = sentiment.analyze(tweets.statuses[i].text).comparative;
             comparativeSum2 += comparativeScore;
             sum2 += score;
-            console.log(score)
+            //console.log(score)
             //console.log(sum)
             if(score < 0) {
                 numNegTweets2++;
@@ -146,7 +146,7 @@ app.post('/findSentimentInState', function(req, res){
             var comparativeScore = sentiment.analyze(tweets.statuses[i].text).comparative;
             comparativeSum += comparativeScore;
             sum += score;
-            console.log(score)
+           // console.log(score)
             //console.log(sum)
             if(score < 0) {
                 numNegTweets++;
