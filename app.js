@@ -41,17 +41,24 @@ app.post('/findSentimentInLocation', function(req, res){
     // with the results, post in a database, and then in client side code, make following request showing results of database
     var location = req.body.area;
     
-    var searchterms = location + " AND covid";
+    var searchterms = location + " AND ";
 
     var sum = 0;
     var comparativeSum = 0;
+    
+    var sum2 = 0;
+    var comparativeSum2 = 0;
     
     var numPosTweets = 0;
     var numNegTweets = 0;
     var numNeutralTweets = 0;
     
+    var numPostTweets2 = 0;
+    var numNegTweets2 = 0;
+    var numNeutralTweets2 = 0;
+    
 
-    client.get('search/tweets', {q: searchterms, count: 100}, function(error, tweets, response) {
+    client.get('search/tweets', {q: searchterms + "covid", count: 100}, function(error, tweets, response) {
         for(var i=0; i<tweets.statuses.length; i++){
             var score = sentiment.analyze(tweets.statuses[i].text).score;
             var comparativeScore = sentiment.analyze(tweets.statuses[i].text).comparative;
@@ -70,8 +77,33 @@ app.post('/findSentimentInLocation', function(req, res){
             }
             //console.log(sum);
         }
-        var obj = {score: sum, comparative: comparativeSum, numGood: numPosTweets, numBad: numNegTweets, numNeutral: numNeutralTweets};
+        
+        
+        client.get('search/tweets', {q: searchterms + "#socialdistancing", count: 100}, function(error, tweets, response) {
+        for(var i=0; i<tweets.statuses.length; i++){
+            var score = sentiment.analyze(tweets.statuses[i].text).score;
+            var comparativeScore = sentiment.analyze(tweets.statuses[i].text).comparative;
+            comparativeSum2 += comparativeScore;
+            sum2 += score;
+            console.log(score)
+            //console.log(sum)
+            if(score < 0) {
+                numNegTweets2++;
+            }
+            else if(score == 0) {
+                numNeutralTweets2++;
+            }
+            else {
+                numPosTweets2++;
+            }
+            //console.log(sum);
+        }
+        var obj = {score: sum+sum2, comparative: comparativeSum+comparativeSum2, numGood: numPosTweets2+numPosTweets, numBad: numNegTweets2+numNegTweets, numNeutral: numNeutralTweets2+numNeutralTweets2};
         res.send(JSON.stringify(obj));
+    });
+        
+        var obj = {score: sum, comparative: comparativeSum, numGood: numPosTweets, numBad: numNegTweets, numNeutral: numNeutralTweets};
+        //res.send(JSON.stringify(obj));
     });
     
     /*
@@ -127,7 +159,7 @@ app.post('/findSentimentInState', function(req, res){
             }
             //console.log(sum);
         }
-        var storage = new State({stateName: location, comparative: comparativeSum, numGood: numPosTweets, numBad: numNegTweets, numNeutral: numNeutralTweets});
+        var storage = new State({stateName: location, score: sum, comparative: comparativeSum, numGood: numPosTweets, numBad: numNegTweets, numNeutral: numNeutralTweets});
         storage.save();
     });
     

@@ -32,7 +32,7 @@
 </style>
 </head>
 <body>
-<button id="specialBtn">jcndm</button>
+<button id="specialBtn">Update Database</button>
 
 <div id='map'></div>
 
@@ -68,35 +68,37 @@
     var canadaProvs = ["Alberta","British Columbia","Manitoba","New Brunswick", "Newfoundland and Labrador","Northwest Territories", "Northwest Territories", "Nova Scotia","Nunavut", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan", "Yukon"];
     
     
-    for(var i=0; i<usStates.length; i++) {
+    document.getElementById('specialBtn').addEventListener('click', function(){
+		for(var i=0; i<usStates.length; i++) {
         var data = {area: usStates[i]}
-            fetch('/findSentimentInLocation', {
+            fetch('/findSentimentInState', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)
             })
-        .then( response => response.json())
+        .then(function(response){})
         .then(function(data){
-            console.log(data);
+            //console.log(data);
         }); 
     }
     
     for(var i=0; i<canadaProvs.length(); i++) {
         var data = {area: canadaProvs[i]}
-            fetch('/findSentimentInLocation', {
+            fetch('/findSentimentInState', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)
             })
-        .then( response => response.json())
+        .then(function(response){})
         .then(function(data){
-            console.log(data);
+            //console.log(data);
         });
     }
+	});
     
     
     
