@@ -221,12 +221,17 @@ $(document).ready(function() {
 			btn.addClass('d-none');
 
 			$('#avgSentiment').text(data.score);
+			$('#subjectivity').text(data.comparative);
+			$('#positive').text(data.numGood);
+			$('#negative').text(data.numBad);
+			$('#neutral').text(data.numNeutral);
+			$('#total').text(data.numGood + data.numBad + data.numNeutral);
+
 		});
 	
 
 		/*
 		var bodyData = {area: city};
-
 		fetch('/findSentimentInLocation', {
 			method: "POST",
 			headers: {
@@ -237,7 +242,6 @@ $(document).ready(function() {
 		}).then(function(response){
 			console.log('success');
 		}).then(function(data){
-
 		}).catch(function(error){
 			console.log(error);
 		});
@@ -254,27 +258,27 @@ $(document).ready(function() {
 	</tr>
 	<tr>
 	  <td>Average Sentiment</td>
-	  <td id="avgSentiment">NEED TO GRAB</td>
+	  <td id="avgSentiment">Please search a city</td>
 	</tr>
 	<tr>
 	  <td>Subjectivity</td>
-	  <td>NEED TO GRAB</td>
+	  <td id="subjectivity">Please search a city</td>
 	</tr>
 	<tr>
 	  <td>Positive</td>
-	  <td>NEED TO GRAB</td>
+	  <td id="positive">Please search a city</td>
 	</tr>
 	<tr>
 	  <td>Negative</td>
-	  <td>NEED TO GRAB</td>
+	  <td id ="negative">Please search a city</td>
 	</tr>
 	<tr>
 		<td>Neutral</td>
-		<td>NEED TO GRAB</td>
+		<td id="neutral">Please search a city</td>
 	</tr>
 	<tr>
 		<td>Total number of tweets</td>
-		<td>NEED TO GRAB</td>
+		<td id="total">Please search a city</td>
 	</tr>
   </table>
   <br><br><br>  <br><br><br>
