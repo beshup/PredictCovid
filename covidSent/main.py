@@ -1,6 +1,14 @@
 import tweepy
 
+from flask import Flask
+
 from textblob import TextBlob
+
+app = Flask(__name__)
+
+@app.route('/')
+def hello_world():
+    return 'Hello, World!'
 
 consumer_key = '7jAQTZMwnBW7EIaj58wQM4oKF'
 consumer_secret = 'EkS01Y1vPKVTycXxeFj5L701BnIXALviiB7rqRVEUY3M9Z0RVT'
