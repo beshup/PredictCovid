@@ -53,7 +53,7 @@ app.post('/findSentimentInLocation', function(req, res){
     var numNegTweets = 0;
     var numNeutralTweets = 0;
     
-    var numPostTweets2 = 0;
+    var numPosTweets2 = 0;
     var numNegTweets2 = 0;
     var numNeutralTweets2 = 0;
     
