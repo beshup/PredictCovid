@@ -6,7 +6,7 @@ from textblob import TextBlob
 
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/getSentimentOffCityName', methods=["POST"])
 def hello_world():
     return 'Hello, World!'
 
