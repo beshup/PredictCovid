@@ -1,7 +1,7 @@
 var express = require('express'),
     app = express(),
     mongoose = require('mongoose'),
-    PORT = 3000;
+    PORT = 'https://predictcovid.herokuapp.com/';
     State = require('./server/models/statename'),
     compression = require('compression'),
     cors = require('cors'),
