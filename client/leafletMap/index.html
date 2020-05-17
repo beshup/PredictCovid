@@ -35,6 +35,7 @@
 
 <script type="text/javascript" src="canada-states.js"></script>
 
+
 <script type="text/javascript">
 
 	var map = L.map('map').setView([37.8, -96], 4);
@@ -109,11 +110,15 @@
 	}
 
 	var geojson;
+	var geojson2;
 
 	function resetHighlight(e) {
 		geojson.resetStyle(e.target);
+		geojson2.resetStyle(e.target);
 		info.update();
 	}
+
+
 
 	function zoomToFeature(e) {
 		map.fitBounds(e.target.getBounds());
@@ -128,6 +133,11 @@
 	}
 
 	geojson = L.geoJson(statesData, {
+		style: style,
+		onEachFeature: onEachFeature
+	}).addTo(map);
+
+	geojson2 = L.geoJson(usd, {
 		style: style,
 		onEachFeature: onEachFeature
 	}).addTo(map);
