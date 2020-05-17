@@ -6,6 +6,16 @@ var express = require('express'),
     compression = require('compression'),
     cors = require('cors'),
     {PythonShell} = require('python-shell'),
+    Twitter = require('twitter'),
+    Sentiment = require('sentiment');
+
+var sentiment = new Sentiment();
+var client = new Twitter({
+    consumer_key: '7jAQTZMwnBW7EIaj58wQM4oKF',
+    consumer_secret: 'EkS01Y1vPKVTycXxeFj5L701BnIXALviiB7rqRVEUY3M9Z0RVT',
+    access_token_key: '2802654716-azAukzm36U3XdMENQ3KTdrQOc6wnEPc7WWuZ15o',
+    access_token_secret: 'V6QBef9uoKxPqOszRYNUSgvex8v8G0IKg0nAiHyhQRz8B'
+});
 
 app.use(compression());
 app.use(cors());
@@ -30,13 +40,31 @@ app.post('/findSentimentInLocation', function(req, res){
     // run python script and then get the results back
     // with the results, post in a database, and then in client side code, make following request showing results of database
     var location = req.body.area;
+    var searchterms = location + " AND covid"
+
+    var sum = 0;
+    var comparativeSum = 0;
+
+    client.get('search/tweets', {q: searchterms, count: 100}, function(error, tweets, response) {
+        for(var i=0; i<tweets.statuses.length; i++){
+            var score = sentiment.analyze(tweets.statuses[i].text).score;
+            var comparativeScore = sentiment.analyze(tweets.statuses[i].text).comparative;
+            comparativeSum += comparativeScore;
+            sum += score;
+            //console.log(sum);
+        }
+        var obj = {score: sum, comparative: comparativeSum};
+        res.send(JSON.stringify(obj));
+    });
     
+    /*
     var cityname = new CityName({
         city: location,
         num: 1
     });
 
     cityname.save();
+    */
 
     /*
     PythonShell.run('covidSent/main.py', function (err) {
@@ -44,9 +72,6 @@ app.post('/findSentimentInLocation', function(req, res){
         console.log('finished');
     });
     */
-
-
-    res.send("Worked");
     
 });
 
