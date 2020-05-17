@@ -39,7 +39,51 @@
 
 
 <script type="text/javascript">
-
+    
+    var usStates = ["Alabama","Alaska","Arizona","Arkansas","California","Colorado",
+  "Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois",
+  "Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland",
+  "Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana",
+  "Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York",
+  "North Carolina","North Dakota","Ohio","Oklahoma","Oregon","Pennsylvania",
+  "Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah",
+  "Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"];
+    
+    var canadaProvs = ["Alberta","British Columbia","Manitoba","New Brunswick", "Newfoundland and Labrador","Northwest Territories", "Northwest Territories", "Nova Scotia","Nunavut", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan", "Yukon"];
+    
+    
+    for(var i=0; i<usStates.length; i++) {
+        var data = {area: usStates[i]}
+            fetch('/findSentimentInLocation', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+        }).then( response => response.json())
+        .then(function(data){
+            console.log(data);
+        }); 
+    }
+    
+    for(var i=0; i<canadaProvs.length(); i++) {
+        var data = {area: canadaProvs[i]}
+            fetch('/findSentimentInLocation', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+        }).then( response => response.json())
+        .then(function(data){
+            console.log(data);
+        });
+    }
+    
+    
+    
 	var map = L.map('map').setView([37.8, -96], 4);
 
 	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
