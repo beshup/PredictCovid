@@ -19,8 +19,8 @@ mongoose.connect('mongodb+srv://predictcoviduser:ruhacks@cluster0-ztew1.mongodb.
     console.log("connected to database on atlas");
 });
 
-app.get('/', express.static('client'));
-app.use('/show', express.static('client/leafletMap'));
+app.get('/', express.static('covidSent/templates'));
+app.use('/show', express.static('covidSent/templates/leaflet'));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

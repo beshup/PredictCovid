@@ -2,30 +2,25 @@ import tweepy
 from flask import Flask
 
 from textblob import TextBlob
-from flask import render_template
+from flask import render_template, request
 
 app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return render_template("../client/index.html")
+    return render_template("index.html")
 
 @app.route("/show")
 def show():
-    return render_template("../client/leafletMap/index.html")
+    return render_template("leaflet.html")
 
 
-@app.route('/getSentimentOffCity', methods = ['POST'])
-def getSentiment():
-    req = request.get_json()
-    print(req)
-    res = func(req)
 
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0', port=5000)
 
-def func(cityName): 
+def func():
     consumer_key = '7jAQTZMwnBW7EIaj58wQM4oKF'
     consumer_secret = 'EkS01Y1vPKVTycXxeFj5L701BnIXALviiB7rqRVEUY3M9Z0RVT'
     access_token = '2802654716-azAukzm36U3XdMENQ3KTdrQOc6wnEPc7WWuZ15o'
@@ -155,3 +150,4 @@ def func(cityName):
 
     #for tweet in tweepy.Cursor(api.search, q='COVID',lang='en').items(5):
     #    print(tweet.text)
+

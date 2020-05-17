@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Map styles and geoccoder</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link href="https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css" type="text/css"/>
+<script src="https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.js"></script>
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="index.js"></script>
+<style>
+	body { margin: 0; padding: 0; }
+	#map {
+		top: 0;
+		bottom: 0;
+		margin-top: 150px;
+		width: 100%;
+		position: absolute;
+	}
+	#menu {
+		position: absolute;
+		background: white;
+		padding: 10px;
+		font-family: 'Open Sans', sans-serif;
+	}
+	h1 {text-align: center;
+		margin-top: 40px;
+	}
+	h2{
+		text-align: center;
+		margin-top: 50%;
+	}
+	.btn {
+		border: none;
+		color: white;
+		padding: 20px 40px;
+		text-align: center;
+		font-size: 16px;
+		opacity: 1;
+		transition: 0.3s;
+		position:absolute;
+		z-index: 1999;
+		}
+
+	.btn:hover {opacity: 0.6}
+	
+	.btndata {
+		background-color: green;
+		margin-bottom: 20px;
+		margin-right: 20px;
+		margin-left: 85%;
+		margin-top: 35%;
+	}
+
+	.btnmap {
+		background-color: #f4511e;
+		margin-bottom: 20px;
+		margin-right: 20px;
+		margin-left: 83%;
+		margin-top: 40%;
+	}
+	#affected {
+		font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+		border-collapse: collapse;
+		width: 60%;
+		margin-left: 20%;
+		text-align: center;
+	}
+
+	#affected td, #affected th {
+		border: 1px solid #ddd;
+		padding: 8px;
+	}
+
+	#affected tr:nth-child(even){background-color: #f2f2f2;}
+
+	#affected tr:hover {background-color: #ddd;}
+
+	#affected th {
+		padding-top: 12px;
+		padding-bottom: 12px;
+		text-align: left;
+		background-color: green;
+		color: white;
+		text-align: center;
+		font-size: larger;
+	}
+
+</style>
+</head>
+<body class="bg-light">
+
+<h1><strong>COVID-19 SENTIMENT DATA ANALYSIS</strong></h1>
+<button class="btn btndata" id="data">GET DATA FOR SEARCH</button>
+<a href='/show'><button class="btn btnmap" id="newMap">DATA HEATMAP BY PROVINCE</button></a> 
+	<div id="map"></div>
+	<div id="menu" class="bg-light">
+		<input
+			id="streets-v11"
+			type="radio"
+			name="rtoggle"
+			value="streets"
+			checked="checked"
+		/>
+		<label for="streets">streets</label>
+		<input id="light-v10" type="radio" name="rtoggle" value="light" />
+		<label for="light">light</label>
+		<input id="dark-v10" type="radio" name="rtoggle" value="dark" />
+		<label for="dark">dark</label>
+		<input id="outdoors-v11" type="radio" name="rtoggle" value="outdoors" />
+		<label for="outdoors">outdoors</label>
+		<input id="satellite-v9" type="radio" name="rtoggle" value="satellite" />
+		<label for="satellite">satellite</label>
+	</div>
+	<div id='map-popups-js' class='map'> </div>
+<script>
+	mapboxgl.accessToken = 'pk.eyJ1IjoiYW53ZXNoaSIsImEiOiJja2E3a2ZmNDcwNHQ2Mnl1bGszYjdlMjJuIn0.Q5bZdtbSOZjC_eGYWHhw-Q';
+	var map = new mapboxgl.Map({
+		container: 'map',
+		style: 'mapbox://styles/mapbox/streets-v11',
+		zoom: 13,
+		center: [-79.4512, 43.6568]
+	}, () => {
+
+	});
+	
+	map.addControl(
+		new MapboxGeocoder({
+			accessToken: mapboxgl.accessToken,
+			marker: {
+				color: 'orange'
+			},
+			mapboxgl: mapboxgl,
+		})
+	);
+	var layerList = document.getElementById('menu');
+	var inputs = layerList.getElementsByTagName('input');
+	
+	function switchLayer(layer) {
+		var layerId = layer.target.id;
+		map.setStyle('mapbox://styles/mapbox/' + layerId);
+	}
+	
+	for (var i = 0; i < inputs.length; i++) {
+		inputs[i].onclick = switchLayer;
+	}
+	
+</script>
+
+<script>
+
+
+$(document).ready(function() {
+
+	var location,
+		lat,
+		long;
+	var btn = $('#submitLocation');
+
+	$(document).on('keydown', (e) => {
+		if(e.which == 13){
+			location = $('.mapboxgl-ctrl-geocoder--input')[0].value;
+			btn.removeClass('d-none');
+		}
+	});
+
+	btn.on('click', () => {
+
+		const access_token = 'pk.eyJ1Ijoic29tYXBzIiwiYSI6ImNrYTduZ2VrNTA1dDQycGxqbTZuNWtteGIifQ.kJpgxAjDzRivSgfoeZyoOA';
+		//call geocoding api and then reverse geocoding api
+		fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${location}.json?types=poi&access_token=${access_token}`, {
+			method: "GET",
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			}
+		})
+		.then(response => response.json())
+		.then(function(data){
+			long = data.features[0].center[0];
+			lat = data.features[0].center[1];
+
+			 return fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}&key=AIzaSyD9Osnpu8WIOT4TVjZ0G_-ZS9t4qLdPVus`, {
+				method: "GET",
+				mode: 'cors'
+			})
+		})
+		.then(response => response.json())
+		.then(function(data){
+			var arr = data.results[0].address_components;
+			var cityName = null;
+			arr.forEach(elem => {
+				for(var i=0; i<elem.types.length; i++){
+					if(cityName == null){
+						if(elem.types[i] == 'locality'){
+							cityName = elem.long_name;
+						}
+					}
+				}
+			});
+
+			var data = { area: cityName}
+			return fetch('/findSentimentInLocation', {
+				method: 'POST',
+				headers: {
+				'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(data)
+			})
+		}).then(function(response){ })
+		.then(function(data){
+
+		});
+	
+
+		/*
+		var bodyData = {area: city};
+
+		fetch('/findSentimentInLocation', {
+			method: "POST",
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(bodyData)
+		}).then(function(response){
+			console.log('success');
+		}).then(function(data){
+
+		}).catch(function(error){
+			console.log(error);
+		});
+		*/
+		
+		$(this).addClass('d-none');
+	});
+});
+
+</script>
+<h2><strong>DATA FOR SEARCHED CITY</strong></h2><br><br>
+<table id="affected">
+	<tr>
+	  <th>Sentiment of tweets</th>
+	  <th>Number</th>
+	</tr>
+	<tr>
+	  <td>Average Sentiment</td>
+	  <td>NEED TO GRAB</td>
+	</tr>
+	<tr>
+	  <td>Subjectivity</td>
+	  <td>NEED TO GRAB</td>
+	</tr>
+	<tr>
+	  <td>Positive</td>
+	  <td>NEED TO GRAB</td>
+	</tr>
+	<tr>
+	  <td>Negative</td>
+	  <td>NEED TO GRAB</td>
+	</tr>
+	<tr>
+		<td>Neutral</td>
+		<td>NEED TO GRAB</td>
+	</tr>
+	<tr>
+		<td>Total number of tweets</td>
+		<td>NEED TO GRAB</td>
+	</tr>
+  </table>
+  <br><br><br>  <br><br><br>
+</body>
+</html>
