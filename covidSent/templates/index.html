@@ -96,7 +96,7 @@
 </head>
 <body class="bg-light">
 
-<h1><strong>COVID-19 SENTIMENT DATA ANALYSIS</strong></h1>
+<h1><strong>COVID MY TWEETS</strong></h1>
 <button class="btn btndata d-none" id="submitLocation">GET DATA FOR SEARCH</button>
 <a href='/show'><button class="btn btnmap" id="newMap">DATA HEATMAP BY PROVINCE</button></a> 
 	<div id="map"></div>
@@ -222,9 +222,9 @@ $(document).ready(function() {
 
 			$('#avgSentiment').text(data.score);
 			$('#subjectivity').text(data.comparative);
-			$('#positive').text(data.numGood);
-			$('#negative').text(data.numBad);
-			$('#neutral').text(data.numNeutral);
+			$('#positive').text(data.numGood + '%');
+			$('#negative').text(data.numBad + '%');
+			$('#neutral').text(data.numNeutral + '%');
 			$('#total').text(data.numGood + data.numBad + data.numNeutral);
 
 		});
@@ -275,10 +275,6 @@ $(document).ready(function() {
 	<tr>
 		<td>Neutral</td>
 		<td id="neutral">Please search a city</td>
-	</tr>
-	<tr>
-		<td>Total number of tweets</td>
-		<td id="total">Please search a city</td>
 	</tr>
   </table>
   <br><br><br>  <br><br><br>
