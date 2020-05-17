@@ -133,7 +133,7 @@
 
 	info.update = function (props) {
 		this._div.innerHTML = '<h4>Canada and US heatmap based on average sentiment number</h4>' +  (props ?
-			'<b>' + props.PRENAME + '</b><br />' + props.density + ' affected people in province'
+			'<b>' + props.PRENAME + '</b><br />' + props.density + ' is the average sentiment in the province/state'
 			: 'Hover over a state/province');
 	};
 
@@ -142,14 +142,14 @@
 
 	// get color depending on population density value
 	function getColor(d) {
-		return d > 75 ? '#800026' :
-				d > 50  ? '#BD0026' :
-				d > 25  ? '#E31A1C' :
-				d > 0  ? '#FC4E2A' :
-				d > -25  ? '#FEB24C' :
-				d > -50   ? '#FED976' :
-				d > -75   ? '#FFEDA0' :
-							'#F2FE33 ';
+		return d > 75 ? '#006400' :
+				d > 50  ? '#228B22' :
+				d > 25  ? '#32CD32' :
+				d > 0  ? '#E5FF00' :
+				d > -25  ? '#FFD300' :
+				d > -50   ? '#FF8C00' :
+				d > -75   ? '#FF4600' :
+							'#FF0000';
 	}
 
 	function style(feature) {

@@ -222,10 +222,9 @@ $(document).ready(function() {
 
 			$('#avgSentiment').text(data.score);
 			$('#subjectivity').text(data.comparative);
-			$('#positive').text(data.numGood + '%');
-			$('#negative').text(data.numBad + '%');
-			$('#neutral').text(data.numNeutral + '%');
-			$('#total').text(data.numGood + data.numBad + data.numNeutral);
+			$('#positive').text((data.numGood/(data.numGood + data.numBad + data.numNeutral))*100 + ' %');
+			$('#negative').text((data.numBad/(data.numGood + data.numBad + data.numNeutral))*100 + ' %');
+			$('#neutral').text((data.numNeutral/(data.numGood + data.numBad + data.numNeutral))*100 + ' %');
 
 		});
 	
