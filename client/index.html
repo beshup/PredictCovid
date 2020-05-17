@@ -205,7 +205,7 @@ $(document).ready(function() {
 			});
 
 			var data = { area: cityName}
-			return fetch('/getTweetsInArea', {
+			return fetch('/findSentimentInLocation', {
 				method: 'POST',
 				headers: {
 				'Content-Type': 'application/json'
@@ -237,6 +237,7 @@ $(document).ready(function() {
 		});
 		*/
 		
+		$(this).addClass('d-none');
 	});
 });
 

@@ -2,10 +2,10 @@ var express = require('express'),
     app = express(),
     mongoose = require('mongoose'),
     PORT = 3000;
-    PastCovidTweet = require('./server/models/covidtweets'),
+    CityName = require('./server/models/cityname'),
     compression = require('compression'),
     cors = require('cors'),
-    {PythonShell} = require('python-shell');
+    {PythonShell} = require('python-shell'),
 
 app.use(compression());
 app.use(cors());
@@ -30,19 +30,19 @@ app.post('/findSentimentInLocation', function(req, res){
     // run python script and then get the results back
     // with the results, post in a database, and then in client side code, make following request showing results of database
     var location = req.body.area;
-    var obj = { location };
-
-    fetch('http://localhost:5000/getSentimentOffCity', {
-        method: "POST",
-        headers: {
-            "content-type": "application/json"
-        },
-        body: JSON.stringify(obj)
-        }).then(function(response){
-
-        }).then(function(data){
-
+    
+    var cityname = new CityName({
+        city: location,
+        num: 1
     });
+
+    cityname.save();
+
+    PythonShell.run('./covidSent/main.py', function (err) {
+        if (err) throw err;
+        console.log('finished');
+    });
+
 
     res.send("Worked");
     
