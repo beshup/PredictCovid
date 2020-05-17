@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <script src="https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.js"></script>
 <link href="https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.css" rel="stylesheet" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
 <style>
 	body { margin: 0; padding: 0; }
 	#map {
@@ -58,7 +59,7 @@
 <body class="bg-light">
 
 <h1><strong>COVID-19 SENTIMENT DATA ANALYSIS</strong></h1>
-<button class="btn" id="submitLocation">Hover Over Me</button>
+<button class="btn d-none" id="submitLocation">Hover Over Me</button>
 	<div id="map"></div>
 	<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
@@ -90,6 +91,8 @@
 		style: 'mapbox://styles/mapbox/streets-v11',
 		zoom: 13,
 		center: [-79.4512, 43.6568]
+	}, () => {
+
 	});
 	
 	map.addControl(
@@ -115,7 +118,92 @@
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-<script src="index.js"></script>
+<script>
 
+$(document).ready(function() {
+	var location,
+		lat,
+		long;
+	var btn = $('#submitLocation');
+
+	$(document).on('keydown', (e) => {
+		if(e.which == 13){
+			location = $('.mapboxgl-ctrl-geocoder--input')[0].value;
+			btn.removeClass('d-none');
+		}
+	});
+
+	btn.on('click', () => {
+
+		const access_token = 'pk.eyJ1Ijoic29tYXBzIiwiYSI6ImNrYTduZ2VrNTA1dDQycGxqbTZuNWtteGIifQ.kJpgxAjDzRivSgfoeZyoOA';
+		//call geocoding api and then reverse geocoding api
+		fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${location}.json?types=poi&access_token=${access_token}`, {
+			method: "GET",
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			}
+		})
+		.then(response => response.json())
+		.then(function(data){
+			long = data.features[0].center[0];
+			lat = data.features[0].center[1];
+
+			 return fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}&key=AIzaSyD9Osnpu8WIOT4TVjZ0G_-ZS9t4qLdPVus`, {
+				method: "GET",
+				mode: 'cors'
+			})
+		})
+		.then(response => response.json())
+		.then(function(data){
+			var arr = data.results[0].address_components;
+			var cityName = null;
+			arr.forEach(elem => {
+				for(var i=0; i<elem.types.length; i++){
+					if(cityName == null){
+						if(elem.types[i] == 'locality'){
+							cityName = elem.long_name;
+						}
+					}
+				}
+			});
+
+			var data = { area: cityName}
+			return fetch('/getTweetsInArea', {
+				method: 'POST',
+				headers: {
+				'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(data)
+			})
+		}).then(function(response){ })
+		.then(function(data){
+
+		});
+	
+
+		/*
+		var bodyData = {area: city};
+
+		fetch('/findSentimentInLocation', {
+			method: "POST",
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(bodyData)
+		}).then(function(response){
+			console.log('success');
+		}).then(function(data){
+
+		}).catch(function(error){
+			console.log(error);
+		});
+		*/
+		
+	});
+});
+
+</script>
 </body>
 </html>
