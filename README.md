@@ -1,3 +1,17 @@
+Follow these steps to get the web app set up locally:
+
+```
+git clone https://github.com/beshup/PredictCovid.git
+```
+
+```
+cd into the project directory
+```
+
+```
+node app.js
+```
+
 Welcome to COVID My Tweets! 
 
 A platform for analyzing and visualizing the sentiment data from tweets based on geographical area.
