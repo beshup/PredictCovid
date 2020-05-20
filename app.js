@@ -1,7 +1,9 @@
+require('dotenv').config()
+
 var express = require('express'),
     app = express(),
     mongoose = require('mongoose'),
-    PORT = 3000;
+    PORT = process.env.PORT;
     State = require('./server/models/statename'),
     compression = require('compression'),
     cors = require('cors'),
@@ -11,10 +13,10 @@ var express = require('express'),
 
 var sentiment = new Sentiment();
 var client = new Twitter({
-    consumer_key: '7jAQTZMwnBW7EIaj58wQM4oKF',
-    consumer_secret: 'EkS01Y1vPKVTycXxeFj5L701BnIXALviiB7rqRVEUY3M9Z0RVT',
-    access_token_key: '2802654716-azAukzm36U3XdMENQ3KTdrQOc6wnEPc7WWuZ15o',
-    access_token_secret: 'V6QBef9uoKxPqOszRYNUSgvex8v8G0IKg0nAiHyhQRz8B'
+    consumer_key: process.env.TWITTER_CK,
+    consumer_secret: process.env.TWITTER_CS,
+    access_token_key: process.env.TWITTER_AK,
+    access_token_secret: process.env.TWITTER_AS
 });
 
 app.use(compression());
@@ -29,7 +31,7 @@ mongoose.connect('mongodb+srv://predictcoviduser:ruhacks@cluster0-ztew1.mongodb.
     console.log("connected to database on atlas");
 });
 
-app.get('/', express.static('covidSent/templates'));
+app.use('/', express.static('covidSent/templates'));
 app.use('/show', express.static('covidSent/templates/leaflet'));
 
 app.use(express.urlencoded({ extended: true }));
